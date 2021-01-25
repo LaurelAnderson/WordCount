@@ -1,3 +1,5 @@
+// 2021 Laurel Anderson
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "hash.h"
@@ -28,14 +30,12 @@ int main( int argc, char *argv[] )  {
 		}
 		
 		// set argument start point to 2
-		start = 2; 
-		printf("First argument is number %d and second is %s\n", num, argv[2]); 
+		start = 2;  
 		
 	}else{ 
 	
 		// set argument start point to 1
-		start = 1; 
-		printf("First argument is not a number\n"); 
+		start = 1;  
 		
 	}
 	
@@ -43,6 +43,11 @@ int main( int argc, char *argv[] )  {
 	for (int i = start; i < argc; i++){
 		
 		printf("Parsing file %s...\n", argv[i]);
+		
+		// open file and send it to parse_file()
+		FILE *fp = fopen(argv[i], "r");
+		parse_file(fp); 
+		fclose(fp);
 
 	}
 	
