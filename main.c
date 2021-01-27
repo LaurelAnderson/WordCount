@@ -2,12 +2,15 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "hash.h"
+#include "hash.h"   
 #include "getWord/getWord.h"
 
 int main( int argc, char *argv[] )  {
 
+    // This part was set up to test the hashing function without the rest of the code
+    Table *test = table_create(100);
 
+/*
 	// cheak if there are the approprate amount of args
 	if (argc < 2){
 	
@@ -49,19 +52,8 @@ int main( int argc, char *argv[] )  {
 		parse_file(fp); 
 		fclose(fp);
 
-	}
-	
-	/*
-	char *str; 
-	FILE *fp = fopen(argv[1], "r");
-	
-	str = getNextWord(fp);
-	printf("%s\n", str); 
-	
-	free(str); 
-	fclose(fp);
-	*/
-	
+	}    
+*/	
 	return 0; 
 	
 }

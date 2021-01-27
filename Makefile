@@ -1,5 +1,5 @@
 output: 
-	gcc -g -o output main.c hash_helper.c getWord/getWord.o
+	gcc -g -o output main.c hash_helper.c hash.c getWord/getWord.o
 	
 clean:
 	rm output
