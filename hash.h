@@ -9,7 +9,6 @@
 // it keeps track of hashed key, contents, collisions for that bucket, and next entry
 typedef struct Entry{
 
-    char *key; 
     char *string; 
     int collisions;
     struct Entry *next; 
@@ -17,7 +16,7 @@ typedef struct Entry{
 }Entry;
 
 // this is the structure for the hashtablel wrapper of each entry. 
-// it keeps track of teh size, total collisions for the entire table, and the array of entries
+// it keeps track of the size, total collisions for the entire table, and the array of entries
 typedef struct Table{
 
     int size; 
@@ -29,8 +28,17 @@ typedef struct Table{
 // This method creates a hash table of given size
 Table *table_create(int size);
 
-// this creates a new entry for the table with a given key and string
-Entry *entry_create(char *key, char *string); 
+// this creates a new entry for the table with the string
+Entry *entry_create(char *string); 
+
+// this frees a given entry 
+void free_entry(Entry *entry); 
+
+// This frees a given table
+void free_table(Table *table); 
+
+// This inserts a value into the table
+void insert(char *string, Table *table); 
 
 // This takes in a file and isolates the word pairs to be hashed. 
 void parse_file(FILE*); 

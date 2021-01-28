@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "hash.h"
+//#include "dict/crc64.o"
 
 // This method creates a hash table of given size
 Table *table_create(int size){
@@ -25,18 +26,79 @@ Table *table_create(int size){
 }
 
 // this creates a new entry for the table with a given key and string
-Entry *entry_create(char *key, char *string){
+Entry *entry_create(char *string){
     
     // put aside mem for the entry
     Entry *entry = (Entry*)malloc(sizeof(Entry));
-    entry->key = (char*)malloc(strlen(key)+1); 
     entry->string = (char*)malloc(strlen(string)+1);
     entry->collisions = 0; 
     
-    // copy items over
-    strcpy(entry->key, key); 
+    // copy string over 
     strcpy(entry->string, string); 
     
     return entry;
     
 }
+
+// this frees a given entry 
+void free_entry(Entry *entry){
+    
+    // free string and entry itself
+    free(entry->string); 
+    free(entry); 
+    
+}
+
+// This frees a given table
+void free_table(Table *table){
+
+    // iterate through all buckets
+    for (int i=0; i<table->size; i++){
+        
+        // if the bucket is not null, free it
+        // we will need to change this later when there is a linked list here
+        if(table->buckets[i] != NULL){
+            free_entry(table->buckets[i]);
+        }
+        
+    }
+    
+    // free the table and the entry pointer
+    free(table->buckets); 
+    free(table);
+}
+
+// This inserts a value into the table
+void insert(char *string, Table *table){
+
+    // this gets the hash value. Gets value from crc64 and % it with size
+    // unsigned long long index = crc64(string) % table->size; 
+    int index = 50; 
+    Entry *new_entry = entry_create(string); 
+    Entry *temp = table->buckets[index]; 
+    
+    printf("This is crc hash code %d which was %s\n", index, string); 
+    
+    // check if bucket is empty 
+    if(table->buckets[index] == NULL){
+    
+        // insert into empty bucket
+        table->buckets[index] = new_entry;
+        printf("We inserted at %d\n", index);  
+        
+    }else{
+    
+        // handle collisions
+        printf("there was a collision.\n"); 
+        
+    }
+    
+}
+
+
+
+
+
+
+
+
