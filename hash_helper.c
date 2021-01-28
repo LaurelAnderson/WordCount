@@ -9,29 +9,50 @@
 
 void parse_file(FILE *fp){
 
-    char *str1, *str2;
-    // i think we need to malloc temp here. Work on this function later. 
+    char *str1 = NULL;
+    char *str2 = NULL;
+    char *string_pair = NULL;   
     
-    str2 = getNextWord(fp);
+    str2 = getNextWord(fp); 
     
     // loop until end of the file
     // Note: this does not free the returned strings. Need to do free later
     while(1){
     
-        str1 = str2; 
-        str2 = getNextWord(fp);  
+        // if prev == null
+        if(str1 == NULL){
         
-        // if at the end of the file, aka getNextWord == NULL
-        if(str2 == NULL) break;
-        
-        // concat both words into one string with a space between them 
-        strcat(str1, " ");
-        strcat(str1, str2);   
-        
-        // here we send the pair to create an entry for the 
-        printf("%s\n", str1);
-        
+             str1 = str2;  
+               
+        }else{
+            
+            str2 = getNextWord(fp);  
+            
+            // if at the end of the file, aka getNextWord == NULL
+            if(str2 == NULL) break;
+            
+            // allocate space for both strings, a space, and a \0
+            string_pair = (char *)malloc(strlen(str1) + strlen(str2) + 2);
+            
+            // concat both words into one string with a space between them 
+            strcpy(string_pair, str1); 
+            strcat(string_pair, " "); 
+            strcat(string_pair, str2);   
+            
+            // here we send the pair to create an entry for the 
+            // printf("%s %s\n", str1, str2); 
+            printf("%s\n", string_pair);
+            
+            free(str1);
+            str1 = NULL; 
+            
+        }
+          
     }
+    
+    // free strings
+    free(str1); 
+    free(str2);
     
     return; 
 }

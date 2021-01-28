@@ -6,15 +6,16 @@
 
 int main( int argc, char *argv[] )  {
 
+    /*
     // This part was set up to test the hashing function without the rest of the code
     Table *test = table_create(100);
     insert("Hello there", test);  
     //insert("Hello there", test); 
     free_table(test); 
+    */
     
     // Todo: connect to the hash function and write a method that will insert into the table. 
 
-/*
 	// cheak if there are the approprate amount of args
 	if (argc < 2){
 	
@@ -57,7 +58,7 @@ int main( int argc, char *argv[] )  {
 		fclose(fp);
 
 	}    
-*/	
+	
 	return 0; 
 	
 }
