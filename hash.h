@@ -19,7 +19,8 @@ typedef struct Entry{
 // it keeps track of the size, total collisions for the entire table, and the array of entries
 typedef struct Table{
 
-    int size; 
+    int size;
+    int num_items;  
     int total_col; 
     Entry **buckets; 
         
@@ -41,6 +42,9 @@ void free_table(Table *table);
 void insert(char *string, Table *table); 
 
 // This takes in a file and isolates the word pairs to be hashed. 
-void parse_file(FILE*); 
+void parse_file(FILE*, Table *table); 
+
+// This is a test hash function
+int test_hash(char *string, int size); 
 
 #endif

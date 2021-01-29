@@ -14,6 +14,7 @@ Table *table_create(int size){
     Table *table = (Table*)malloc(sizeof(Table)); 
     table->size = size; 
     table->total_col = 0; 
+    table->num_items = 0; 
     table->buckets = (Entry**)calloc(table->size, sizeof(Entry*)); 
     
     // set each bucket to NULL
@@ -73,29 +74,46 @@ void insert(char *string, Table *table){
 
     // this gets the hash value. Gets value from crc64 and % it with size
     // unsigned long long index = crc64(string) % table->size; 
-    int index = 50; 
+    
+    // use testhash to get the index for an entry
+    int index =  test_hash(string, table->size);
+    
     Entry *new_entry = entry_create(string); 
     Entry *temp = table->buckets[index]; 
     
-    printf("This is crc hash code %d which was %s\n", index, string); 
+    printf("This is hash code %d which was %s\n", index, string); 
     
     // check if bucket is empty 
     if(table->buckets[index] == NULL){
     
         // insert into empty bucket
         table->buckets[index] = new_entry;
-        printf("We inserted at %d\n", index);  
+        printf("We inserted at %d\n", index);
+        table->num_items++;   
         
     }else{
     
         // handle collisions
-        printf("there was a collision.\n"); 
+        printf("There was a collision.\n");
+        table-> total_col++; 
+        free(new_entry); 
         
     }
     
 }
 
-
+// Test hashing function
+int test_hash(char *string, int size){
+    
+    int ret_num = 0; 
+    
+    // add ascii values of chars in string
+    for (int i = 0; i < strlen(string); i++) ret_num += string[i]; 
+    
+    // return a value that will fit in the hash
+    return (ret_num % size); 
+    
+}
 
 
 

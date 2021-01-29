@@ -7,7 +7,7 @@
 #include "hash.h"
 #include "getWord/getWord.h"
 
-void parse_file(FILE *fp){
+void parse_file(FILE *fp, Table *table){
 
     char *str1 = NULL;
     char *str2 = NULL;
@@ -40,8 +40,8 @@ void parse_file(FILE *fp){
             strcat(string_pair, str2);   
             
             // here we send the pair to create an entry for the 
-            // printf("%s %s\n", str1, str2); 
-            printf("%s\n", string_pair);
+            // printf("%s\n", string_pair);
+            insert(string_pair, table);
             
             free(str1);
             str1 = NULL; 
