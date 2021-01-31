@@ -31,7 +31,12 @@ Entry *entry_create(char *string){
     
     // put aside mem for the entry
     Entry *entry = (Entry*)malloc(sizeof(Entry));
-    entry->string = (char*)malloc(strlen(string)+1);
+    entry->string = string;
+    
+    // For every entry created, set next to NULL
+    entry->next = NULL; 
+    
+    // Base collision count
     entry->collisions = 0; 
     
     // copy string over 
@@ -52,21 +57,30 @@ void free_entry(Entry *entry){
 
 // This frees a given table
 void free_table(Table *table){
-
+    
+    Entry *free_item = NULL; 
+     
     // iterate through all buckets
     for (int i=0; i<table->size; i++){
         
-        // if the bucket is not null, free it
-        // we will need to change this later when there is a linked list here
-        if(table->buckets[i] != NULL){
-            free_entry(table->buckets[i]);
-        }
+        Entry *ptr = table->buckets[i];
         
-    }
-    
+        // if the bucket is not empty
+        // iterate through the buckets linked lists and free them
+        while(ptr != NULL){
+        
+            printf("Element in bucket %d is %s\n", i, ptr->string);
+            free_item = ptr; 
+            ptr = ptr->next; 
+            free_entry(free_item);
+            
+        }   
+    }       
+
     // free the table and the entry pointer
     free(table->buckets); 
     free(table);
+    
 }
 
 // This inserts a value into the table
@@ -81,7 +95,7 @@ void insert(char *string, Table *table){
     Entry *new_entry = entry_create(string); 
     Entry *temp = table->buckets[index]; 
     
-    printf("This is hash code %d which was %s\n", index, string); 
+    //printf("This is hash code %d which was %s\n", index, string); 
     
     // check if bucket is empty 
     if(table->buckets[index] == NULL){
@@ -95,10 +109,32 @@ void insert(char *string, Table *table){
     
         // handle collisions
         printf("There was a collision.\n");
-        table-> total_col++; 
-        free(new_entry); 
+        table->total_col++;
+        table->num_items++;
+        
+        // send to function that will preform separate chaining 
+        collision(table->buckets[index], new_entry);
         
     }
+    
+}
+
+// This handles collisions by separate chaining
+void collision(Entry *linklist_start, Entry *linklist_end){
+
+    // set num of items in that LL and set an iterator
+    linklist_start->collisions++; 
+    Entry *iter = linklist_start; 
+    
+    // sets iter to element at the end of the LL
+    while(iter->next != NULL){
+        
+        iter = iter->next;    
+        
+    }
+    
+    // sets last element of linked list
+    iter->next = linklist_end;  
     
 }
 

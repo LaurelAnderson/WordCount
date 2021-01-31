@@ -41,10 +41,14 @@ void free_table(Table *table);
 // This inserts a value into the table
 void insert(char *string, Table *table); 
 
-// This takes in a file and isolates the word pairs to be hashed. 
-void parse_file(FILE*, Table *table); 
+// This handles collisions by separate chaining
+void collision(Entry *linklist_start, Entry *new_entry); 
 
 // This is a test hash function
 int test_hash(char *string, int size); 
+
+// This takes in a file and isolates the word pairs to be hashed. 
+void parse_file(FILE*, Table *table); 
+
 
 #endif

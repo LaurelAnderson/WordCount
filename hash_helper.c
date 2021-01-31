@@ -39,8 +39,7 @@ void parse_file(FILE *fp, Table *table){
             strcat(string_pair, " "); 
             strcat(string_pair, str2);   
             
-            // here we send the pair to create an entry for the 
-            // printf("%s\n", string_pair);
+            // here we send the pair to create an entry for the table
             insert(string_pair, table);
             
             free(str1);
