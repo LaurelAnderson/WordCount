@@ -11,7 +11,7 @@ void parse_file(FILE *fp, Table *table){
 
     char *str1 = NULL;
     char *str2 = NULL;
-    char *string_pair = NULL;   
+    char *string_pair = NULL;    
     
     str2 = getNextWord(fp); 
     
@@ -41,6 +41,15 @@ void parse_file(FILE *fp, Table *table){
             
             // here we send the pair to create an entry for the table
             insert(string_pair, table);
+            
+            // if we have a cirtain amount of collisions, create a new bigger hash, 
+            // unhash all elelments in the fist hash, and insert them into the bigger hash
+            if (table->total_col > 10){
+                 
+                 // printf("We need more room!!! %d\n", count);
+
+            }
+            
             
             free(str1);
             str1 = NULL; 

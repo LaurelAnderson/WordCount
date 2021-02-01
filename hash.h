@@ -10,7 +10,7 @@
 typedef struct Entry{
 
     char *string; 
-    int collisions;
+    int count;
     struct Entry *next; 
     
 }Entry;
@@ -42,7 +42,7 @@ void free_table(Table *table);
 void insert(char *string, Table *table); 
 
 // This handles collisions by separate chaining
-void collision(Entry *linklist_start, Entry *new_entry); 
+void collision(Table *table, Entry *linklist_start, Entry *new_entry); 
 
 // This is a test hash function
 int test_hash(char *string, int size); 
