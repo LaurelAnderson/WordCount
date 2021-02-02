@@ -54,6 +54,10 @@ int main( int argc, char *argv[] )  {
 
 	}
 	
+	// After everything is done, qsort the entries. 
+	
+	
+	// free the table
 	free_table(test);   
 	
 	return 0; 

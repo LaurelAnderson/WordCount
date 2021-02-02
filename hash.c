@@ -84,15 +84,15 @@ void free_table(Table *table){
 }
 
 // This inserts a value into the table
-void insert(char *string, Table *table){
+void insert(Entry *new_entry, Table *table){
 
     // this gets the hash value. Gets value from crc64 and % it with size
     // unsigned long long index = crc64(string) % table->size; 
     
     // use testhash to get the index for an entry
-    int index =  test_hash(string, table->size);
+    int index =  test_hash(new_entry->string, table->size);
     
-    Entry *new_entry = entry_create(string); 
+    //Entry *new_entry = entry_create(string); 
     Entry *temp = table->buckets[index]; 
     
     //printf("This is hash code %d which was %s\n", index, string); 
@@ -102,7 +102,7 @@ void insert(char *string, Table *table){
     
         // insert into empty bucket
         table->buckets[index] = new_entry;
-        // printf("We inserted at %d\n", index);
+        printf("We inserted at %d\n", index);
         table->num_items++;   
         
     }else{
@@ -166,7 +166,58 @@ int test_hash(char *string, int size){
     
 }
 
+// This is the function that grows a table 
+void grow(Table *main_table){ 
 
+    // create a new table of original table size * 3
+    Table *new_table = table_create((main_table->size)*3); 
+
+    Table *temp_table = NULL; 
+    Entry *ptr = NULL; 
+    Entry *temp_ptr = NULL;
+
+    // iterate though buckets
+    for(int i = 0; i < main_table->size; i++){
+
+        ptr = main_table->buckets[i];
+        //temp_ptr = NULL; 
+
+        // if there is somehting in the bucket, 
+        if(ptr != NULL){
+
+            // set temp to the element after the main pointer
+            temp_ptr = ptr->next;  
+
+            //iterate through the linked list
+            while(temp_ptr != NULL){
+
+                ptr->next = NULL; 
+
+                // hash entry into new table
+                insert(ptr, new_table); 
+                ptr = temp_ptr; 
+                temp_ptr = ptr->next; 
+            }
+
+            //once you are here, ptr is looking at the last element
+            insert(ptr, new_table);
+
+        }
+               
+    }
+
+    // swtich the tables 
+    temp_table = main_table; 
+    main_table = new_table;
+    new_table = NULL;  
+
+    //set total collisions back to 0
+    main_table->total_col = 0; 
+
+    //free old table
+    free_table(temp_table);
+
+}
 
 
 

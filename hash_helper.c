@@ -11,7 +11,8 @@ void parse_file(FILE *fp, Table *table){
 
     char *str1 = NULL;
     char *str2 = NULL;
-    char *string_pair = NULL;    
+    char *string_pair = NULL; 
+    Entry *string_entry = NULL;    
     
     str2 = getNextWord(fp); 
     
@@ -39,16 +40,22 @@ void parse_file(FILE *fp, Table *table){
             strcat(string_pair, " "); 
             strcat(string_pair, str2);   
             
-            // here we send the pair to create an entry for the table
-            insert(string_pair, table);
-            
-            // if we have a cirtain amount of collisions, create a new bigger hash, 
-            // unhash all elelments in the fist hash, and insert them into the bigger hash
-            if (table->total_col > 10){
-                 
-                 // printf("We need more room!!! %d\n", count);
+            // create a fresh entry for the word pair
+            string_entry = entry_create(string_pair);
 
-            }
+            // here we send the new entry to insert into the table
+            //insert(string_pair, table);
+            insert(string_entry, table);
+            
+
+            // This is where the issue is
+            //if we have a cirtain amount of collisions, create a new bigger hash, 
+            // if (table->total_col > 10){
+                 
+            //     printf("We need more room!!! Calling grow!\n");
+            //     grow(table); 
+
+            // }
             
             
             free(str1);
@@ -63,4 +70,5 @@ void parse_file(FILE *fp, Table *table){
     free(str2);
     
     return; 
+
 }
