@@ -1,0 +1,159 @@
+// This is the function that grows a table 
+void grow(Table *main_table){ 
+
+    // create a new table of original table size * 3
+    Table *new_table = table_create((main_table->size)*3); 
+
+    //Table *temp_table = NULL; 
+    Entry *ptr = NULL; 
+    Entry *temp_ptr = NULL; 
+
+    // iterate though buckets
+    for(int i = 0; i < main_table->size; i++){
+
+        ptr = main_table->buckets[i];
+        //temp_ptr = NULL; 
+
+        // if there is somehting in the bucket, 
+        if(ptr != NULL){
+
+            // set temp to the element after the main pointer
+            temp_ptr = ptr->next;  
+
+            //iterate through the linked list
+            while(temp_ptr != NULL){
+
+                ptr->next = NULL; 
+
+                // hash entry into new table
+                insert(ptr, new_table); 
+                ptr = temp_ptr; 
+                temp_ptr = ptr->next; 
+            }
+
+            //once you are here, ptr is looking at the last element
+            insert(ptr, new_table);
+
+        }
+               
+    }
+
+    // swtich the tables 
+    // temp_table = main_table; 
+    // main_table = new_table;
+    // new_table = NULL;  
+
+    Entry **temp = NULL; 
+
+    temp = main_table->buckets; 
+    main_table->buckets = new_table->buckets; 
+    new_table->buckets = temp; 
+
+    //set total collisions back to 0
+    main_table->total_col = 0; 
+
+    printf("Freeing old table\n");
+    //free old table
+    free_table(new_table);
+
+}
+
+Element in bucket: 0 value: fought in count: 1
+Element in bucket: 0 value: confederacy of count: 1
+Element in bucket: 2 value: during the count: 2
+Element in bucket: 3 value: gorgol the count: 1
+Element in bucket: 3 value: his entire count: 1
+Element in bucket: 5 value: activated his count: 1
+Element in bucket: 6 value: clone wars count: 1
+Element in bucket: 6 value: a squadron count: 1
+Element in bucket: 6 value: an attempt count: 1
+Element in bucket: 6 value: mechanic gorgol count: 1
+Element in bucket: 7 value: the republic count: 1
+Element in bucket: 7 value: wherein the count: 3
+Element in bucket: 7 value: the wherein count: 1
+Element in bucket: 8 value: the confederacy count: 1
+Element in bucket: 8 value: walkers in count: 1
+Element in bucket: 11 value: he participated count: 1
+Element in bucket: 11 value: of independent count: 1
+Element in bucket: 15 value: which eliminated count: 1
+Element in bucket: 18 value: wars early count: 1
+Element in bucket: 19 value: who fought count: 1
+Element in bucket: 20 value: swift was count: 1
+Element in bucket: 21 value: participated in count: 1
+Element in bucket: 21 value: entire squad count: 1
+Element in bucket: 22 value: centre during count: 1
+Element in bucket: 22 value: squadron of count: 1
+Element in bucket: 23 value: sergeant who count: 1
+Element in bucket: 26 value: attempt to count: 1
+Element in bucket: 26 value: in response count: 1
+Element in bucket: 28 value: squad wherein count: 1
+Element in bucket: 31 value: gorgol activated count: 1
+Element in bucket: 33 value: bunker wherein count: 1
+Element in bucket: 35 value: republic during count: 1
+Element in bucket: 36 value: atrt walkers count: 1
+Element in bucket: 38 value: led a count: 1
+Element in bucket: 40 value: clone trooper count: 1
+Element in bucket: 41 value: eliminated swift count: 1
+Element in bucket: 42 value: of a count: 1
+Element in bucket: 44 value: in a count: 1
+Element in bucket: 45 value: a raid count: 1
+Element in bucket: 46 value: he led count: 1
+Element in bucket: 47 value: troopers on count: 1
+Element in bucket: 54 value: in an count: 1
+Element in bucket: 55 value: clone troopers count: 1
+Element in bucket: 55 value: defense turrets count: 1
+Element in bucket: 56 value: turrets which count: 1
+Element in bucket: 58 value: a clone count: 1
+Element in bucket: 61 value: response gorgol count: 1
+Element in bucket: 63 value: and his count: 1
+Element in bucket: 66 value: of the count: 1
+Element in bucket: 67 value: war he count: 1
+Element in bucket: 67 value: chief mechanic count: 1
+Element in bucket: 68 value: trooper sergeant count: 1
+Element in bucket: 68 value: in the count: 2
+Element in bucket: 69 value: raid on count: 1
+Element in bucket: 69 value: systems tambor count: 1
+Element in bucket: 70 value: deep space count: 1
+Element in bucket: 71 value: into a count: 1
+Element in bucket: 73 value: battle he count: 1
+Element in bucket: 74 value: on the count: 1
+Element in bucket: 74 value: of clone count: 1
+Element in bucket: 74 value: hiding in count: 1
+Element in bucket: 76 value: to break count: 1
+Element in bucket: 76 value: a bunker count: 1
+Element in bucket: 76 value: his hidden count: 1
+Element in bucket: 77 value: the grand count: 1
+Element in bucket: 82 value: the clone count: 1
+Element in bucket: 82 value: hidden defense count: 1
+Element in bucket: 83 value: nickname of count: 1
+Element in bucket: 83 value: the war count: 1
+Element in bucket: 84 value: was the count: 1
+Element in bucket: 85 value: enemy chief count: 1
+Element in bucket: 85 value: the handy count: 1
+Element in bucket: 86 value: army of count: 1
+Element in bucket: 88 value: early in count: 1
+Element in bucket: 89 value: the battle count: 1
+Element in bucket: 90 value: independent systems count: 1
+Element in bucket: 90 value: was hiding count: 1
+Element in bucket: 91 value: the nickname count: 1
+Element in bucket: 91 value: tambor deep count: 1
+Element in bucket: 91 value: break into count: 1
+Element in bucket: 95 value: the enemy count: 1
+Element in bucket: 95 value: handy was count: 1
+Element in bucket: 96 value: on atrt count: 1
+Element in bucket: 96 value: swift and count: 1
+Element in bucket: 97 value: grand army count: 1
+Element in bucket: 97 value: space centre count: 1
+
+
+Element: hello there at index: 0
+Element: there hello at index: 1
+Element: there general at index: 2
+Element: kenobi you at index: 3
+Element: not welcome at index: 4
+Element: welcome not at index: 5
+Element: are not at index: 6
+Element: you are at index: 7
+Element: are you at index: 8
+Element: general kenobi at index: 9
+Element: kenobi general at index: 10

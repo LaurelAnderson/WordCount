@@ -65,11 +65,11 @@ void free_table(Table *table){
         
         Entry *ptr = table->buckets[i];
         
-        // if the bucket is not empty
         // iterate through the buckets linked lists and free them
         while(ptr != NULL){
         
-            printf("Element in bucket: %d value: %s count: %d\n", i, ptr->string, ptr->count);
+            // segfault happens here after indez 101
+            //printf("Element in bucket: %d value: %s count: %d\n", i, ptr->string, ptr->count);
             free_item = ptr; 
             ptr = ptr->next; 
             free_entry(free_item);
@@ -78,6 +78,7 @@ void free_table(Table *table){
     }       
 
     // free the table and the entry pointer
+    printf("done with free table\n");
     free(table->buckets); 
     free(table);
     
@@ -102,13 +103,13 @@ void insert(Entry *new_entry, Table *table){
     
         // insert into empty bucket
         table->buckets[index] = new_entry;
-        printf("We inserted at %d\n", index);
+        //printf("We inserted at %d\n", index);
         table->num_items++;   
         
     }else{
     
         // handle collisions
-        printf("There was a collision at %d.\n", index);
+        //printf("There was a collision at %d.\n", index);
         table->total_col++;
         
         // send to function that will preform separate chaining 
@@ -174,48 +175,50 @@ void grow(Table *main_table){
 
     Table *temp_table = NULL; 
     Entry *ptr = NULL; 
-    Entry *temp_ptr = NULL;
+    Entry *copy = NULL;
+    int count = 0;  
 
     // iterate though buckets
     for(int i = 0; i < main_table->size; i++){
 
         ptr = main_table->buckets[i];
-        //temp_ptr = NULL; 
 
-        // if there is somehting in the bucket, 
-        if(ptr != NULL){
+        //iterate through the linked list
+        while(ptr != NULL){
 
-            // set temp to the element after the main pointer
-            temp_ptr = ptr->next;  
+            // create a copy of the given entry
+            copy = entry_create(ptr->string); 
+            copy->count = ptr->count; 
 
-            //iterate through the linked list
-            while(temp_ptr != NULL){
-
-                ptr->next = NULL; 
-
-                // hash entry into new table
-                insert(ptr, new_table); 
-                ptr = temp_ptr; 
-                temp_ptr = ptr->next; 
-            }
-
-            //once you are here, ptr is looking at the last element
-            insert(ptr, new_table);
+            // hash entry into new table
+            insert(copy, new_table);
+             
+            ptr = ptr->next; 
 
         }
                
-    }
+    }  
 
-    // swtich the tables 
-    temp_table = main_table; 
-    main_table = new_table;
-    new_table = NULL;  
+    Entry **temp = NULL; 
+
+    temp = main_table->buckets; 
+    main_table->buckets = new_table->buckets; 
+    new_table->buckets = temp; 
+
+    // Switch counts
+    count = main_table->size; 
+    main_table->size = new_table->size;
+    new_table->size = count; 
 
     //set total collisions back to 0
-    main_table->total_col = 0; 
+    main_table->total_col = 0;
+
+    printf("Freeing old table\n");
+
+    printf("Main table content %s\n", main_table->buckets[0]->string);
 
     //free old table
-    free_table(temp_table);
+    free_table(new_table);  
 
 }
 

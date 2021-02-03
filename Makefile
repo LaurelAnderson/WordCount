@@ -15,4 +15,7 @@ test3: output
 	
 test: 
 	valgrind --leak-check=yes ./output text.txt
+
+gdb: 	
+	gdb ./output
 	

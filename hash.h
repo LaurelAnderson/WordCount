@@ -53,4 +53,10 @@ void parse_file(FILE*, Table *table);
 // This is the function that grows a table 
 void grow(Table *table); 
 
+// This function unhashes all structs and puts them in an array 
+void sort_table(Table *table); 
+
+// This is the qsort compare function
+int compare(const void *a, const void *b);
+
 #endif

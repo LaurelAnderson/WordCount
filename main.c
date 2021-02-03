@@ -55,7 +55,7 @@ int main( int argc, char *argv[] )  {
 	}
 	
 	// After everything is done, qsort the entries. 
-	
+	sort_table(test);
 	
 	// free the table
 	free_table(test);   

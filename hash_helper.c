@@ -72,3 +72,65 @@ void parse_file(FILE *fp, Table *table){
     return; 
 
 }
+
+// This function unhashes all structs and puts them in an array 
+void sort_table(Table *table){
+
+    Entry *ret_arr[table->num_items]; 
+
+    int arr_count = 0; 
+
+    // iterate through the table
+    for (int i = 0; i<table->size; i++){
+
+        Entry *ptr1 = table->buckets[i]; 
+        Entry *ptr2 = NULL; 
+
+        while(ptr1 != NULL){
+
+            ptr2 = ptr1->next; 
+            ret_arr[arr_count] = ptr1; 
+            arr_count++; 
+            ptr1 = ptr2; 
+
+        }
+
+    }
+
+    printf("Before sorting:\n");
+    for(int i = 0; i<table->num_items; i++){
+        printf("Element: %s at index: %d Count: %d\n", ret_arr[i]->string, i, ret_arr[i]->count);
+    }
+
+    // sort the array 
+    qsort(ret_arr, table->num_items, sizeof(Entry*), compare); 
+
+    printf("After sorting:\n");
+    for(int i = 0; i<table->num_items; i++){
+        printf("Element: %s at index: %d Count: %d\n", ret_arr[i]->string, i, ret_arr[i]->count);
+    }
+
+    return; 
+
+}
+
+// qsort compare function
+int compare(const void *a, const void *b){
+
+    Entry *data_1 = *(Entry**)a; 
+    Entry *data_2 = *(Entry**)b; 
+
+    if(data_1->count > data_2->count){
+
+        return -1; 
+
+    }else if(data_1->count < data_2->count){
+
+        return 1; 
+
+    }else{
+
+        return 0; 
+
+    }
+}
