@@ -1,6 +1,15 @@
 // hash.h header file
 // 2021 Laurel Anderson
 
+/*
+Interface for this application is ./wordpair <-#> file.txt <file2.txt> ...
+You can have as many text files as you want, but you need to have at least
+one file. The first argument can be a number if required. The hash table is 
+interfaced with the main method then parse file. The main method takes in 
+user input, organizes it, and sends it to parse. The parse file then iterates
+the given argument and sends word pairs to the hash table. 
+*/
+
 #include <stdio.h>
 #ifndef HASH_H
 #define HASH_H
@@ -42,10 +51,7 @@ void free_table(Table *table);
 void insert(Entry *entry, Table *table); 
 
 // This handles collisions by separate chaining
-void collision(Table *table, Entry *linklist_start, Entry *new_entry); 
-
-// This is a test hash function
-int test_hash(char *string, int size); 
+void collision(Table *table, Entry *linklist_start, Entry *new_entry);  
 
 // This takes in a file and isolates the word pairs to be hashed. 
 void parse_file(FILE*, Table *table); 
@@ -54,7 +60,7 @@ void parse_file(FILE*, Table *table);
 void grow(Table *table); 
 
 // This function unhashes all structs and puts them in an array 
-void sort_table(Table *table); 
+void sort_table(Table *table, int num); 
 
 // This is the qsort compare function
 int compare(const void *a, const void *b);

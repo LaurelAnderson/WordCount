@@ -1,8 +1,21 @@
-Write a program (in C) targeted at the Linux platform which reads words from one or more les, and prints out a list
-of the most frequently occurring sequential pairs of words and the number of times they occurred, in decreasing order of
-occurrence.
+TODO: 
+	Write a program (in C) targeted at the Linux platform which reads words from one or moles, and prints out a list
+	of the most frequently occurring sequential pairs of words and the number of times they occurred, in decreasing order of
+	occurrence.
 
-Example: If a le contained the text \This is a nasty assignment and it will take me two weeks to do this nasty assign-
-ment. I should probably start on it early. I suspect it will take 300-500 lines of code.", the word pairs \nasty assignment",
-\it will" and \will take" would each be detected as having 2 occurrences, while all the other sequential pairs have only
-one occurrence
+TO COMPILE: 
+	gcc -g -o wordpairs main.c hash_helper.c hash.c getWord/getWord.o dict/crc64.o
+	(or)
+	make
+
+TO RUN: 
+	./wordpairs -5 mobydick.txt
+	./wordpairs dracula.txt frankenstein.txt mobydick.txt
+	./wordpairs -10 dracula.txt frankenstein.txt mobydick.txt gettysburg.txt
+	(or)
+	make test1
+	make test2
+	make test3
+ 
+
+

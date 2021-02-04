@@ -17,7 +17,6 @@ void parse_file(FILE *fp, Table *table){
     str2 = getNextWord(fp); 
     
     // loop until end of the file
-    // Note: this does not free the returned strings. Need to do free later
     while(1){
     
         // if prev == null
@@ -44,20 +43,16 @@ void parse_file(FILE *fp, Table *table){
             string_entry = entry_create(string_pair);
 
             // here we send the new entry to insert into the table
-            //insert(string_pair, table);
             insert(string_entry, table);
-            
 
-            // This is where the issue is
-            //if we have a cirtain amount of collisions, create a new bigger hash, 
-            // if (table->total_col > 10){
+            // grow if greater average of all hashes
+            if (table->num_items/table->size > 3){
                  
-            //     printf("We need more room!!! Calling grow!\n");
-            //     grow(table); 
+                grow(table); 
 
-            // }
+            }
             
-            
+            // free and reset strings
             free(str1);
             str1 = NULL; 
             
@@ -74,9 +69,10 @@ void parse_file(FILE *fp, Table *table){
 }
 
 // This function unhashes all structs and puts them in an array 
-void sort_table(Table *table){
+void sort_table(Table *table, int num){
 
-    Entry *ret_arr[table->num_items]; 
+    Entry *ret_arr[table->num_items];
+    int iter = 0;  
 
     int arr_count = 0; 
 
@@ -97,17 +93,34 @@ void sort_table(Table *table){
 
     }
 
-    printf("Before sorting:\n");
-    for(int i = 0; i<table->num_items; i++){
-        printf("Element: %s at index: %d Count: %d\n", ret_arr[i]->string, i, ret_arr[i]->count);
-    }
-
     // sort the array 
     qsort(ret_arr, table->num_items, sizeof(Entry*), compare); 
 
-    printf("After sorting:\n");
-    for(int i = 0; i<table->num_items; i++){
-        printf("Element: %s at index: %d Count: %d\n", ret_arr[i]->string, i, ret_arr[i]->count);
+    // if there is a number argument,
+    if (num != 0){
+
+        // set the iterator number to the argument. 
+        iter = num; 
+
+        // check for -
+        if (num < 0){
+
+            iter = -iter; 
+
+        }
+        
+    }else{
+
+        // else, print all the values in the array.
+        iter = table->num_items;
+
+    }
+
+    // print all the values to stdout
+    for(int i = 0; i<iter; i++){
+
+        printf("%10d %s\n", ret_arr[i]->count, ret_arr[i]->string);
+        
     }
 
     return; 

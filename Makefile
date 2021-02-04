@@ -1,21 +1,21 @@
 output: 
-	gcc -g -o output main.c hash_helper.c hash.c getWord/getWord.o
+	gcc -g -o wordpairs main.c hash_helper.c hash.c getWord/getWord.o dict/crc64.o
 	
 clean:
-	rm output
+	rm wordpairs
 
-test1: output
-	./output text.txt
+test1: wordpairs
+	./wordpairs -5 mobydick.txt
 	
-test2: output
-	./output text.txt text2.txt text3.txt
+test2: wordpairs
+	./wordpairs dracula.txt frankenstein.txt mobydick.txt
 	
-test3: output
-	./output 45 text.txt text2.txt text3.txt
+test3: wordpairs
+	./wordpairs -10 dracula.txt frankenstein.txt mobydick.txt gettysburg.txt
 	
 test: 
-	valgrind --leak-check=yes ./output text.txt
+	valgrind --leak-check=yes ./wordpairs -5 mobydick.txt
 
 gdb: 	
-	gdb ./output
+	gdb ./wordpairs
 	
